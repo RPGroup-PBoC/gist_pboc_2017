@@ -23,14 +23,14 @@
     <div class="site">
       <div class="sidebar" id="sidebar">
         <div class="header">
-          <h1 class="title"><a href=""><img id="logo" src="{{ site.baseurl }} /images/fc_bug.png"></a></h1>
+          <h1 class="title"><a href=""><img id="logo" src="{{ site.baseurl }}/images/fc_bug.png"></a></h1>
           <span class="tagline">Physical Biology of the Cell</span>
         </div>
         <div class="posts">
           <ul class="posts-list">
             {% for post in site.posts %}
               <li class="post-link">
-                <a class="post-title" href="{{ post.url }}">
+                <a class="post-title" href="{{ site.baseurl }}{{ post.url }}">
                   {{ post.title }}
                 </a>
               </li>
