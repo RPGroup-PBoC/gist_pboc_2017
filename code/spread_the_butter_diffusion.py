@@ -1,8 +1,10 @@
 # Import the necessary modules.
 import numpy as np
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 import seaborn as sns
+
+# Import our class utilities
+import pboc_utils as pboc
 
 
 # In this script, we will examine the process of diffusion by performing
@@ -95,30 +97,18 @@ prob_inf[49, 0] = 1.0   # Remember that Python indexing begins at 0!
 prob_inf = master_eq(prob_inf, k, dt)
 
 # And that's it! Let's look at the diffusion as a three dimensional bar plot.
-
-fig = plt.figure()
-# Add a three-dimensional axis.
-ax = fig.add_subplot(1, 1, 1, projection='3d')
-colors = sns.color_palette('viridis', n_colors=time_points)
-
-# Loop through each time step and make a bar plot
-box_vec = np.arange(0, num_boxes, 1)
-time_vec = np.arange(0, int(time_points / dt), 1)
-for i in range(0, time_points, 5):
-    ax.bar(box_vec, prob_inf[:, i], time_vec[i], zdir='x', width=1,
-           color=colors[i])
-
-# Add axis labels.
-ax.set_xlabel('time (sec)')
-ax.set_ylabel('box number')
-ax.set_zlabel('probability')
+# For simplicity, we'll use the 'bar3' function provided in the class utilities
+time_conv = np.linspace(0, int(time_points/dt), time_points)
+fig1 = pboc.bar3(prob_inf, xlabel='time (sec)', ylabel='box number',
+                 zlabel='probability', bin_step=5, y_vec=time_conv)
 plt.show()
 
 # As we pan around in the above figure, we can see that the result makes sense
 # intuitive sense. As time goes on, the particles will diffuse outward with
-# the highest probability in the middle of the distribution. How does this
+# the highest probability in the middle of the distribution How does this
 # change when we put the diffusing particles in a finite box? Let's take a
 # look.
+
 num_boxes = 5
 prob_box = np.zeros((num_boxes, time_points))
 
@@ -129,24 +119,28 @@ prob_box[0, 0] = 1.0
 prob_box = master_eq(prob_box, k, dt)
 
 # Again, let's plot this in three dimensions
-fig = plt.figure()
-ax = fig.add_subplot(1, 1, 1, projection='3d')
-box_vec = np.arange(0, num_boxes, 1)
-time_vec = np.arange(0, int(time_points / dt), 1)
-for i in range(0, time_points, 5):
-    ax.bar(box_vec, prob_box[:, i], time_vec[i], zdir='x', width=1,
-           color=colors[i])
-ax.set_xlabel('time (sec)')
-ax.set_ylabel('box number')
-ax.set_zlabel('probability')
+pboc.bar3(prob_box, xlabel='time (sec)', ylabel='box number',
+          zlabel='probability', bin_step=5, y_vec=time_conv)
 plt.show()
 
+#fig = plt.figure()
+#ax = fig.add_subplot(1, 1, 1, projection='3d')
+#box_vec = np.arange(0, num_boxes, 1)
+#time_conv = np.arange(0, int(time_points / dt), 1)
+#for i in range(0, time_points, 5):
+#    ax.bar(box_vec, prob_box[:, i], time_conv[i], zdir='x', width=1,
+#           color=colors[i])
+#ax.set_xlabel('time (sec)')
+#ax.set_ylabel('box number')
+#ax.set_zlabel('probability')
+#plt.show()
+#
 
 # This matches our physical intuition. Notice now that the probability is not
 # zero anywhere in the box. it has filled up the box and the distribution has
 # now become uniform.
 
-#  # Let's look at a more complicated case. Fluorescence Recovery After
+# Let's look at a more complicated case. Fluorescence Recovery After
 # Photobleaching is a common method in biology of # measuring the
 # diffuseability of a particular molecule in a cell. This includes labeling
 # your molecule of interest with a fluorescent molecule and allowing it to
@@ -170,17 +164,20 @@ prob_frap[2:8, 0] = 0   # In Python, we can index from [start:stop)
 prob_frap = master_eq(prob_frap, k, dt)
 
 # Let's take a look.
-fig = plt.figure()
-ax = fig.add_subplot(1, 1, 1, projection='3d')
-box_vec = np.arange(0, num_boxes, 1)
-time_vec = np.arange(0, int(time_points / dt), 1)
-for i in range(time_points):
-    ax.bar(box_vec, prob_frap[:, i], time_vec[i], zdir='x', width=1,
-           color=colors[i])
-ax.set_xlabel('time (sec)')
-ax.set_ylabel('box number')
-ax.set_zlabel('probability')
+pboc.bar3(prob_frap, xlabel='time (sec)', ylabel='box_number',
+          zlabel='probability', y_vec=time_conv)
 plt.show()
+# fig = plt.figure()
+# ax = fig.add_subplot(1, 1, 1, projection='3d')
+# box_vec = np.arange(0, num_boxes, 1)
+# time_conv = np.arange(0, int(time_points / dt), 1)
+# for i in range(time_points):
+#     ax.bar(box_vec, prob_frap[:, i], time_conv[i], zdir='x', width=1,
+#            color=colors[i])
+# ax.set_xlabel('time (sec)')
+# ax.set_ylabel('box number')
+# ax.set_zlabel('probability')
+# plt.show()
 
 # Notice how the probability within the hole filled, but it never returned to
 # the initial probability. This is because we actively removed molecules by

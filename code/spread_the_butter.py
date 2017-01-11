@@ -1,9 +1,11 @@
+# Import the necessary modules.
 import numpy as np
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 import seaborn as sns
 
-plt.close('all')
+# Import the course utilities.
+import pboc_utils as pboc
+
 # In this tutorial, we will expand upon our numerical integration of the mean
 # mRNA copy number by solving for the complete mRNA copy number distribution as
 # a function of time.
@@ -55,10 +57,10 @@ mRNA_vec = np.arange(0, upper_bound + 1, 1)
 fig, ax = plt.subplots(2, 1)
 
 # Make a bar plot of the time 0 distribution
-ax[0].bar(mRNA_vec, prob[:, 0], color='b', width=1)
+ax[0].bar(mRNA_vec, prob[:, 0], width=1)
 ax[0].set_ylabel('probability')
 ax[0].set_title('t=0 min')
-ax[1].bar(mRNA_vec, prob[:, -1], color='g', width=1)
+ax[1].bar(mRNA_vec, prob[:, -1], width=1)
 ax[1].set_title('t=5 min')
 ax[1].set_ylabel('probability')
 ax[1].set_xlabel('number of mRNAs')
@@ -66,30 +68,13 @@ plt.show()
 
 
 # To get a better sense of how the distribution changes with time, let's make
-# a bar plot for each point in time and plot it in three dimensions.
-# Set up the plotting figure
-fig = plt.figure()
-
-# Add a three-dimensional axis.
-ax = fig.add_subplot(1, 1, 1, projection='3d')
-# The '1,1,1' sets up a single plotting axis in the figure.
-
+# a bar plot for each point in time and plot it in three dimensions. To save
+# ourselves a bit of headache with syntax, we'll use the function 'bar3' in
+# the course utilities file to generate this plot.
 # Generate a time vector.
 time_vec = np.linspace(0, time, num_steps)
 
-# Set a colormap that will corespond to time.
-colors = sns.color_palette('viridis', n_colors=num_steps)
-
-# Loop through each time step and plot the bar.
-for i in range(num_steps):
-    ax.bar(mRNA_vec, prob[:, i], time_vec[i], zdir='x', width=1,
-           color=colors[i])
-
-# Add axis labels.
-ax.set_xlabel('time (min)')
-ax.set_ylabel('number of mRNAs')
-ax.set_zlabel('probability')
-
-# Rotate the plot for viewing in this notebook.
-ax.view_init(15, 15)
+pboc.bar3(prob, xlabel='time', ylabel='number of mRNA',
+          zlabel='probability',  y_vec=time_vec, bin_step=5)
 plt.show()
+ax.set_zlabel('probability')
