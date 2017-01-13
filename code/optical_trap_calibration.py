@@ -98,12 +98,12 @@ for i in range(len(bead_ims)):
 
     # Label the image and extract the centroid.
     im_lab = skimage.measure.label(im_border)
-    props = skimage.measure.regionprops(im_lab)
-    x, y = props[0].centroid
+    props = skimage.measure.regionprops(im_lab, intensity_image=np.invert(bead_ims[i]))
+    x, y = props[0].weighted_centroid
 
     # Store the x and y centroid positions in the storage list.
-    centroid_x.append(np.round(x))
-    centroid_y.append(np.round(y))
+    centroid_x.append(x)
+    centroid_y.append(y)
 
 # Now, let's generate some plots to see if our analysis makes sense. We'll
 # plot the centroid x vs centroid y position to make sure that our bead seems
