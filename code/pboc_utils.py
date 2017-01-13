@@ -5,6 +5,7 @@ PRK. These functions were written by Griffin Chure and carry an MIT license.
 """
 import numpy as np
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 import skimage.io
 import skimage.segmentation
 import skimage.filters

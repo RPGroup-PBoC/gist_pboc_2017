@@ -10,15 +10,15 @@ import skimage.io
 # derived "The French Flag" model for patterning in Drosophila embryos. We have
 # provoded two images of developing embryos with different dosages of teh
 # bicoid morphogen. To test our theory, we'll determine the positioning of the
-# cephallic furrow in wild-type (dosage = 1)  and a mutant (dosage = 0.5) by
+# cephalic furrow in wild-type (dosage = 1)  and a mutant (dosage = 0.5) by
 # using mouse clicks. Let's begin by loading in the wt embryo image.
 wt_embryo = skimage.io.imread('data/french_flag/wild_type.tif')
 plt.figure()
 plt.imshow(wt_embryo)
 
 # There are a few things to realize about this image. First, the embry os
-# tildted and the exact position of the cephallic furrow is hard to pin point.
-# We will have to use some trigonometry to  determine teh position of the
+# tildted and the exact position of the cephalic furrow is hard to pin point.
+# We will have to use some trigonometry to  determine the position of the
 # anterior-posterior axis and the relative positioning of the cephalic furrow.
 # TO begin, we'll click on the position of the anterior, the posterior, and the
 # cephalic furrow. Wherever you want to define these points is fine so long as
@@ -46,7 +46,7 @@ wt_fy = furrow_click[0][1]
 
 # To deterime the position of the furrow, we'll find the length of the vector
 # between teh anterior and posterior poles as well as the length between the
-# cephallic furrow and the anterior pole.
+# cephalic furrow and the anterior pole.
 wt_ap = np.sqrt((wt_py - wt_ay)**2 + (wt_px - wt_ax)**2)  # AP distance.
 wt_fa = np.sqrt((wt_fy - wt_ay)**2 + (wt_fx - wt_ax)**2)  # Furrow position
 
