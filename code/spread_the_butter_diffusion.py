@@ -167,17 +167,6 @@ prob_frap = master_eq(prob_frap, k, dt)
 pboc.bar3(prob_frap, xlabel='time (sec)', ylabel='box_number',
           zlabel='probability', y_vec=time_conv)
 plt.show()
-# fig = plt.figure()
-# ax = fig.add_subplot(1, 1, 1, projection='3d')
-# box_vec = np.arange(0, num_boxes, 1)
-# time_conv = np.arange(0, int(time_points / dt), 1)
-# for i in range(time_points):
-#     ax.bar(box_vec, prob_frap[:, i], time_conv[i], zdir='x', width=1,
-#            color=colors[i])
-# ax.set_xlabel('time (sec)')
-# ax.set_ylabel('box number')
-# ax.set_zlabel('probability')
-# plt.show()
 
 # Notice how the probability within the hole filled, but it never returned to
 # the initial probability. This is because we actively removed molecules by
