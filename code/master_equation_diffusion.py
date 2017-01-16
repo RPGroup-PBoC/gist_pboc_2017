@@ -121,19 +121,6 @@ pboc.bar3(prob_box, xlabel='time (sec)', ylabel='box number',
           zlabel='probability', bin_step=5, y_vec=time_conv)
 plt.show()
 
-#fig = plt.figure()
-#ax = fig.add_subplot(1, 1, 1, projection='3d')
-#box_vec = np.arange(0, num_boxes, 1)
-#time_conv = np.arange(0, int(time_points / dt), 1)
-#for i in range(0, time_points, 5):
-#    ax.bar(box_vec, prob_box[:, i], time_conv[i], zdir='x', width=1,
-#           color=colors[i])
-#ax.set_xlabel('time (sec)')
-#ax.set_ylabel('box number')
-#ax.set_zlabel('probability')
-#plt.show()
-#
-
 # This matches our physical intuition. Notice now that the probability is not
 # zero anywhere in the box. it has filled up the box and the distribution has
 # now become uniform.

@@ -7,15 +7,13 @@ import seaborn as sns
 # one-dimensional diffusion as a function of time. In class, we derived that
 # the concentration of molecules at position x at time t can be written as
 #
-#         c(x, t) = N / sqrt(4 * pi * D * t) * exp(-x^2 / 4 * D * t)
+#         p(x, t) = 1 / sqrt(4 * pi * D * t) * exp(-x^2 / 4 * D * t)
 #
-# where D is the diffuision constant of the molecule, N is the number of
-# molecules, and t is the time. Assuming we have a large spike of molecules
-# positioned at the origin at time 0, let's see how the concentration profile
-# canges with time.
-
-N = 100  # number of molecules.
+# where D is the diffuision constant of the molecule,  molecules, and t is the
+# time. Assuming we have a large spike of molecules positioned at the origin at
+# time 0, let's see how the concentration profile canges with time.
 D = 10  # Diffusion constant in square microns per second
+
 time_steps = [1, 5, 10, 50]
 x = np.linspace(-100, 100, 1000)  # Diffusion distance in units of microns.
 
