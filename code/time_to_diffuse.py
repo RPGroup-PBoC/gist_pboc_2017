@@ -19,7 +19,10 @@ time = L**2 / (2 * D)
 
 # Let's plot it!
 plt.figure()
-plt.plot(L, time)
+plt.loglog(L, time)
 plt.xlabel('distance (in microns)')
 plt.ylabel('time (in seconds)')
 plt.show()
+
+# From this plot, we can see that it would take a little over a year to
+# diffuse a single centimeter!
