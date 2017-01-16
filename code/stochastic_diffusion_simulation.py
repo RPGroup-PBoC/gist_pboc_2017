@@ -127,9 +127,14 @@ for i in range(len(n_steps)):
     msd[i] = np.mean(final_position**2)
 
 
-# Let's look at how it scales wit time.
+# Let's look at how it scales with time.
 plt.figure()
-plt.loglog(n_steps, msd, 'o-')
+plt.loglog(n_steps, np.sqrt(msd), 'o', label='simulation')
+
+# We predict the root mean squared displacement would scale linear with the
+# root of the number of steps we've taken
+n_vec = np.logspace(-1, 5, 500)
+plt.loglog(n_vec, np.sqrt(n_vec), '-', label='data')
 plt.xlabel('time (number of steps)')
 plt.ylabel('mean squared displacement')
 plt.show()

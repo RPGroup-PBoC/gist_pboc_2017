@@ -32,8 +32,6 @@ dt = 1 / 50   # Time step in seconds.
 # be careful of boundaries (the first box and the last) when computing the
 # probabilities. Since we'll do this for each example in this script, let's
 # write the master equation as a function.
-
-
 def master_eq(prob, k, dt):
     """
     Computes the master equation for diffusion in one dimension
