@@ -15,14 +15,14 @@ import seaborn as sns
 # canges with time.
 
 N = 100  # number of molecules.
-D = 0.1  # Diffusion constant in square microns per second
+D = 10  # Diffusion constant in square microns per second
 time_steps = [1, 5, 10, 50]
-x = np.linspace(-10, 10, 1000)  # Diffusion distance in units of microns.
+x = np.linspace(-100, 100, 1000)  # Diffusion distance in units of microns.
 
 # Now we can loop through each time step to and evaluate our equation.
 plt.figure()
 for t in time_steps:
-    c_t = N / np.sqrt(4 * np.pi * D * t) * np.exp(-x**2 / (4 * D * t))
+    c_t = 1 / np.sqrt(4 * np.pi * D * t) * np.exp(-x**2 / (4 * D * t))
 
     # Plot the profile as a funxiton of x position
     plt.plot(x, c_t, '-', label='time = ' + str(t) + ' seconds')
