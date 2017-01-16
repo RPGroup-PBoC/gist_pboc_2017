@@ -77,7 +77,7 @@ def spot_counter(im, threshold):
     im_thresh = im > threshold
 
     # Clear the border.
-    im_border = skimage.segementation.clear_border(im_thresh)
+    im_border = skimage.segmentation.clear_border(im_thresh)
 
     # Label the image and return the number of spots.
     im_lab, num_spots = skimage.measure.label(im_border, return_num=True)
@@ -88,25 +88,47 @@ def spot_counter(im, threshold):
 # files through using glob.
 spots_5p_files = glob.glob('data/fly_elongation/5Loops*.tif')
 spots_5p = []
-for i in range(len(spots_5p)):
-    im = skimage.io.imread(spots_5p[i])
+for i in range(len(spots_5p_files)):
+    im = skimage.io.imread(spots_5p_files[i])
     num_spots = spot_counter(im, 900)
     spots_5p.append(num_spots)
 
 # While we are at it, we can do the same procedure with the 3' labeled mRNA.
 spots_3p_files = glob.glob('data/fly_elongation/3Loops*.tif')
 spots_3p = []
-for i in range(len(spots_3p)):
-    im = skimage.io.imread(spots_3p[i])
+for i in range(len(spots_3p_files)):
+    im = skimage.io.imread(spots_3p_files[i])
     num_spots = spot_counter(im, 900)
     spots_3p.append(num_spots)
 
 # Let's plot the number of spots as a function of time.
-time_5p = np.arange(0, len(spots_5p), 1)
-time_3p = np.arange(0, len(spots_3p), 1)
+time_5p = np.arange(0, len(spots_5p), 1) * 10  # conversion to seconds
+time_3p = np.arange(0, len(spots_3p), 1) * 10  # conversion to seconds
 plt.figure()
 plt.plot(time_5p, spots_5p, '-', label="5' labeled")
 plt.plot(time_3p, spots_3p, '-', label="3' labeled")
-plt.xlabel('time (frames)')
+plt.xlabel('time (s)')
 plt.ylabel('spot number')
+plt.legend()
+plt.show()
+
+# This looks good, but we know that these two image sets are not synchronized.
+# By this, I mean that each image does not correspond to the same point in
+# development between the two labeling types. By looking at the image stacks
+# in ImageJ, we can see that the anaphase of the last nuclear cycle (nuclear
+# cycle 14) for the 5' labeled sample begins at frame 99 and at frame 125
+# for the 3' labeled sample. We can plot only these ranges to determine the
+# rate of transcription.
+spots_5p_sync = spots_5p[98:]
+time_5p_sync = time_5p[98:]
+spots_3p_sync = spots_3p[124:]
+time_3p_sync = time_3p[124:]
+
+# Now let's take a look.
+plt.figure()
+plt.plot(time_5p_sync, spots_5p_sync, label="5' labeled")
+plt.plot(time_3p_sync, spots_3p_sync, label="3' labeled")
+plt.xlabel('time (s)')
+plt.ylabel('spot number')
+plt.legend(loc='upper left')
 plt.show()
