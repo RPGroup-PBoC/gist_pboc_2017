@@ -10,8 +10,11 @@ import pboc_utils as pboc
 # mRNA copy number by solving for the complete mRNA copy number distribution as
 # a function of time.
 
-# As is dervied in class, the equation we want to integrate is as follows.
+# As is dervied in class, the change in the probability of observing a given
+# mRNA copy number can be described as
+#
 #  dP(m,t)/dt = rP(m -1 ,t) + y(m + 1)P(m+1, t) - rP(m, t) - ymP(m, t)
+#
 # where m is the number of mRNAs, t is the timepoint, r is the productionj
 # rate of mRNA, y is the degradation rate of the mRNA, and P(m,t) is the
 # probability of mRNAs at time t.
@@ -37,11 +40,12 @@ print(np.shape(prob))
 # Now we just to set the initial condition and start the integration.
 prob[0, 0] = 1
 
-# Begin the integration.
+# Begin the integration. We'll consider the boundary condition of m = 0 by
+# only adding the production from m - 1 when the current m is greater than 0.
 for t in range(1, int(num_steps)):
     for m in range(upper_bound):
         # Compute P(m, t).
-        prob[m, t] = prob[m, t-1] + gamma * dt * prob[m+1, t-1] -\
+        prob[m, t] = prob[m, t-1] + gamma * (m + 1) * dt * prob[m+1, t-1] -\
                      r * dt * prob[m, t-1] - gamma * dt * m * prob[m, t-1]
         # Now include the term if m > 0
         if m > 0:
@@ -77,4 +81,3 @@ time_vec = np.linspace(0, time, num_steps)
 pboc.bar3(prob, xlabel='time', ylabel='number of mRNA',
           zlabel='probability',  y_vec=time_vec, bin_step=5)
 plt.show()
-ax.set_zlabel('probability')

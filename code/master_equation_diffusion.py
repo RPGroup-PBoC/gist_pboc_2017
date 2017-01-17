@@ -140,7 +140,7 @@ num_boxes = 10
 prob_frap = np.zeros((num_boxes, time_points))
 
 # Set the initial condition.
-prob_frap[:, 0] = 1 / num_boxes
+prob_frap[:, 0] = 1 / (num_boxes - 6)
 
 # We'll bleach six boxes in this example.
 prob_frap[2:8, 0] = 0   # In Python, we can index from [start:stop)
