@@ -16,7 +16,7 @@ P = 5E3  # Number of polymerases
 R = np.logspace(-2, 4, 1000)  # Number of repressors
 de_p = -8  # In units of kT
 de_r = -16  # In units of kT
-Nns = 5E6  # Thof e number of nonspecific binding sites for the polymerase and
+Nns = 5E6  # The number of nonspecific binding sites for the polymerase and
            # and repressors.
 
 # To make our calculations a bit easier, we will define the partition
@@ -53,3 +53,38 @@ plt.show()
 
 # We can see that when the number of repressors in the cell increases, the
 # probability of having transcription (being a bound polymerase) is very low.
+
+# This is great, but there is no sensitive way to measure  P bound
+# experimentally. HOwever, if we wish to test this theory, we can measure the
+# fold-change in gene expression compared to the case with no repressors. If we
+# write down the states and weights for the case of no repressor, we can write
+# the fold change as the ratio of the probability of the polymerase bound state
+# as
+#
+#  fold-change ~ (1 + (R / Nns) * e^(-ep_r / kT))^-1.
+#
+# To get sense for how the fold change will change with
+# a change in the repressor copy number, lets generate a plot.
+
+# We'll do this choosing a few different DNA binding strengths of the
+# repressor.
+de_r = [-8, -13, -17]
+# Look at a different range or repressors.
+R = np.logspace(0, 3, 1000)
+# Let's compute the fold change for each de_r.
+plt.figure()
+for e in de_r:
+    fold_change = 1 / ( 1 + (R / Nns) * np.exp(-e))
+    plt.plot(R, fold_change, label=r'$\Delta\varepsilon$ =  ' + str(e) + ' $k_BT$')
+
+# Now change the scales to log.
+plt.xscale('log')
+plt.yscale('log')
+plt.xlabel('number of repressors')
+plt.ylabel('fold-change')
+plt.legend()
+plt.show()
+
+# You can see that increasing the number of repressors or increasing the
+# binding energy of the reperessor to the DNA greatly decreases the
+# fold-change.

@@ -30,8 +30,7 @@ for t in range(1, num_steps):
             prob[m, t] = prob[m, t] + r * dt * prob[m - 1, t - 1]
 
 # Change the time vector to real time.
-time_vec = np.arange(0, time, dt)
-
+time_vec = np.linspace(0, time, num_steps)
 pboc.bar3(prob, xlabel='time (min)', ylabel='number of mRNAs', zlabel='P(m,t)',
-        x_vec=time_vec)
+        y_vec=time_vec)
 plt.show()
