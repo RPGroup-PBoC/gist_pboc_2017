@@ -28,7 +28,7 @@ plt.legend()
 # Generate the phase portrait
 # For this, we will need to generate a matrix of values to compute
 # the derivatives over. We can do this through the numpy meshgrid function
-R1_m, R2_m = np.meshgrid(R1[1::2], R2[1::2])  # only generating every 5th.
+R1_m, R2_m = np.meshgrid(R1[1::30], R2[1::30])  # only generating every 5th.
 
 # Evaluate teh derivatives
 dR1_dt = -gamma * R1_m + r / (1 + (R2_m / k_d)**2)
@@ -40,7 +40,7 @@ plt.show()
 
 
 # Choose a random starting position.
-N = 3
+N = 300
 R1_init = np.random.rand(N) * num_R
 R2_init = np.random.rand(N) * num_R
 
@@ -61,7 +61,7 @@ for t in range(total_time):
     plt.show()
     plt.draw()
     # Now we'll tell it to wait
-    plt.pause(0.05)
+    plt.pause(0.005)
 
 #alpha = 3
 
