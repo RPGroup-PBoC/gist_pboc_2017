@@ -18,7 +18,7 @@ plt.close('all')
 # apart.
 
 # Load the image.
-grat_im = skimage.io.imread('data/optical_tweezer/graticule.tif')
+grat_im = skimage.io.imread('data/optical_tweezer_old/graticule.tif')
 
 # Plot all of the line profiles.
 im_shape = np.shape(grat_im)

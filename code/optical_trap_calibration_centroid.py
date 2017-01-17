@@ -2,6 +2,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import glob
 
 # For image processing
 import skimage.io
@@ -43,7 +44,7 @@ plt.show()
 # blurring the image with a gaussian blur to smooth it out. We'll then look
 # at the histogram.
 
-im_blur = skimage.filters.gaussian(bead_ims[0], sigma=3)
+im_blur = skimage.filters.gaussian(bead_ims[0], sigma=1)
 plt.figure()
 plt.imshow(im_blur, cmap=plt.cm.Greys_r)
 plt.show()
@@ -57,7 +58,7 @@ plt.show()
 
 # It seems pretty distinct what pixels correlate to our bead. Let's impose a
 # threshold value of 0.2 and see how well it works.
-threshold = 0.2
+threshold = 0.15
 im_thresh = im_blur < threshold
 plt.figure()
 plt.imshow(im_thresh, cmap=plt.cm.Greys_r)
@@ -88,16 +89,17 @@ plt.show()
 centroid_x, centroid_y = [], []  # Empty storage lists.
 for i in range(len(bead_ims)):
     # Blur the image.
-    im_blur = skimage.filters.gaussian(bead_ims[i], sigma=3)
+    im_blur = skimage.filters.gaussian(bead_ims[i], sigma=1)
 
     # Segment the image.
     im_thresh = im_blur < threshold
 
     # Clear the border.
     im_border = skimage.segmentation.clear_border(im_thresh)
+    im_large = skimage.morphology.remove_small_objects(im_border)
 
     # Label the image and extract the centroid.
-    im_lab = skimage.measure.label(im_border)
+    im_lab = skimage.measure.label(im_large)
     props = skimage.measure.regionprops(im_lab, intensity_image=np.invert(bead_ims[i]))
     x, y = props[0].weighted_centroid
 
@@ -116,7 +118,7 @@ plt.xlabel('x position (pixels)')
 plt.ylabel('y position (pixels)')
 
 # Now plot them as a function of time.
-time_vec = np.arange(0, len(bead_ims), 1) * (1 / 30)  # Converted to seconds.
+time_vec = np.arange(0, len(bead_ims), 1) #* (1 / 50)  # Converted to seconds.
 plt.figure()
 plt.plot(time_vec, centroid_x, '-')
 plt.xlabel('time (s)')
@@ -127,17 +129,19 @@ plt.plot(time_vec, centroid_y, '-')
 plt.xlabel('time (s)')
 plt.ylabel('y position (pixels)')
 plt.show()
-# That all looks good! It seems to be diffusing as expected. Now let's
-# calculate the mean squared displacement and compute the trap force.
-ip_dist = 0.042  # Physical distance in units of microns per pixel
+# It looks like something gets bumped at frame 24 and then around 120. Let's
+# restrict our analysis to that zone. That all looks good! It seems to be
+# diffusing as expected. Now let's # calculate the mean squared displacement
+# and compute the trap force.
+ip_dist = 0.042  # Physical distance in units of  microns per pixel
 centroid_x_micron = np.array(centroid_x) * ip_dist
 centroid_y_micron = np.array(centroid_y) * ip_dist
 
 # Compute the means and msd.
-mean_x = np.mean(centroid_x_micron)
-mean_y = np.mean(centroid_y_micron)
-msd_x = np.mean((centroid_x_micron - mean_x)**2)
-msd_y = np.mean((centroid_y_micron - mean_y)**2)
+mean_x = np.mean(centroid_x_micron[24:120])
+mean_y = np.mean(centroid_y_micron[24:120])
+msd_x = np.mean((centroid_x_micron[24:120] - mean_x)**2)
+msd_y = np.mean((centroid_y_micron[24:120] - mean_y)**2)
 
 # Compute the trap force.
 kT = 4.1E-3  # In units of pN * micron
