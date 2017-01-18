@@ -6,9 +6,9 @@ import seaborn as sns
 
 # Define the parameters
 L = np.logspace(-12, 2, 1000)  # Range of ligand concentration.
-k_da = 100E-9  # Binding constant for ligand to the active conformation in M
-k_di = 1E-9   # Binding constant for ligand to the inactive conformation in M
-ep_a = 3  # Energy of the active receptor in kT
+k_da = 1E-9  # Binding constant for ligand to the active conformation in M
+k_di = 100E-9   # Binding constant for ligand to the inactive conformation in M
+ep_a = 5  # Energy of the active receptor in kT
 ep_i = 0  # Energy of the inactive receptor in kT
 
 # To save some typing, let's write out the partition function.
@@ -28,7 +28,7 @@ plt.plot(L, p_i, label='inactive unbound')
 plt.plot(L, p_ab, label='active bound')
 plt.plot(L, p_ib, label='inactive bound')
 plt.xscale('log')
-plt.yscale('log')
+# plt.yscale('log')
 plt.xlabel('ligand concentration (M)')
 plt.ylabel('probability of state')
 plt.legend()
@@ -42,4 +42,6 @@ plt.plot(L, p_La, label='active bound')
 plt.plot(L, p_Li, label='inactive bound')
 plt.xlabel('ligand concentration (M)')
 plt.ylabel('$P_{bound} (L)$')
+plt.xscale('log')
+plt.legend()
 plt.show()
