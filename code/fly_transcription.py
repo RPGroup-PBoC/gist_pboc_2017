@@ -20,7 +20,8 @@ import skimage.measure
 # experimental systems, fluorescent puncta appear when that region of the mRNA
 # is properly transcribed. By watching the appearance of the relevant spots, we
 # can make a measurement of the rate of transcription and investigate whether
-# the timing makes sense, given the time in between nuclear divisions.
+# the timing makes sense, given the time in between nuclear divisions. It is
+# important to know that the length of this gene is 3361 base pairs.
 
 # In this exercise, we will measure the rate of transcription in a nuclear
 # cycle 14 of a developing Drosophila melanogaster embryo. Specificially, we
@@ -132,3 +133,10 @@ plt.xlabel('time (s)')
 plt.ylabel('spot number')
 plt.legend(loc='upper left')
 plt.show()
+
+# We can see that the difference in the onset of peaks is about 250 - 300
+# seconds. Knowing that the length of the gene is 3361 base pairs, we
+# can get to a transcription rate of about 10 - 20 base pairs per second.
+# Since a nuclei takes about ten minutes to duplicate, half of that time is
+# being spent just transcribing this gene! We haven't even mentioned the
+# translation!.
