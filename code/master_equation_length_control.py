@@ -12,10 +12,10 @@ plt.close('all')
 
 # Define some parameters.
 r = 20
-dt = 1/50
-gamma = 1/3
-tot_length = 80
-tot_time = 100
+dt = 1/30
+gamma = 5
+tot_length = 100
+tot_time = 150
 
 # Set up the array
 prob = np.zeros((tot_length + 1, tot_time))
@@ -30,32 +30,33 @@ for t in range(1, tot_time):
             prob[ell, t] = prob[ell, t] + r * dt * prob[ell-1, t-1]
 
 # plot it
-pboc.bar3(prob, bin_step=3)
+pboc.bar3(prob, bin_step=5)
 plt.show()
-r = np.logspace(0, -3, tot_length)
+r = 20
+r_frac = np.logspace(0, -3, tot_length)
 gamma = 5
 # Finite monomer pool
 prob = np.zeros((tot_length + 1, tot_time))
 prob[0, 0] = 1.0
 for t in range(1, tot_time):
     for ell in range(tot_length):
-        prob[ell, t] = prob[ell, t-1] - r[ell] * dt * prob[ell, t-1] + gamma * dt * prob[ell + 1, t-1] - gamma * dt * prob[ell, t-1]
+        prob[ell, t] = prob[ell, t-1] - r * r_frac[ell] * dt * prob[ell, t-1] + gamma * dt * prob[ell + 1, t-1] - gamma * dt * prob[ell, t-1]
         if ell > 0:
-            prob[ell, t] = prob[ell, t] + r[ell - 1] * prob[ell-1, t-1]
+            prob[ell, t] = prob[ell, t] + r * r_frac[ell - 1] * dt * prob[ell-1, t-1]
 
-pboc.bar3(prob, xlabel='time (steps)', ylabel='length', zlabel='probability')
+pboc.bar3(prob, xlabel='time (steps)', ylabel='length', zlabel='probability', bin_step=5)
 plt.show()
 # Severing proteins
 prob = np.zeros((tot_length + 1, tot_time))
-r = 20
-gamma = 1
+r = 5
+gamma_frac = np.linspace(0, 1, tot_length + 1)
+gamma = 20
 prob[0, 0] = 1.0
 for t in range(1, tot_time):
     for ell in range(tot_length):
-        prob[ell, t] = prob[ell, t-1] - r * dt * prob[ell, t-1] + gamma * (ell + 1) * dt * prob[ell + 1, t-1] - gamma * ell * dt * prob[ell, t-1]
+        prob[ell, t] = prob[ell, t-1] - r * dt * prob[ell, t-1] + gamma * gamma_frac[ell + 1] * dt * prob[ell + 1, t-1] - gamma * gamma_frac[ell] * dt * prob[ell, t-1]
         if ell > 0:
             prob[ell, t] = prob[ell, t] + r * dt * prob[ell - 1, t-1]
 
-
-pboc.bar3(prob, bin_step=3)
+pboc.bar3(prob, bin_step=5)
 plt.show()
