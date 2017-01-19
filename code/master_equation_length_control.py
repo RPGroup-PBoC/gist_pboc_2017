@@ -13,7 +13,7 @@ plt.close('all')
 # Define some parameters.
 r = 20
 dt = 1/50
-gamma = 3
+gamma = 1/3
 tot_length = 80
 tot_time = 100
 
@@ -32,7 +32,8 @@ for t in range(1, tot_time):
 # plot it
 pboc.bar3(prob, bin_step=3)
 plt.show()
-r = np.exp(np.linspace(0, -1, tot_length))
+r = np.logspace(0, -3, tot_length)
+gamma = 5
 # Finite monomer pool
 prob = np.zeros((tot_length + 1, tot_time))
 prob[0, 0] = 1.0
@@ -40,7 +41,7 @@ for t in range(1, tot_time):
     for ell in range(tot_length):
         prob[ell, t] = prob[ell, t-1] - r[ell] * dt * prob[ell, t-1] + gamma * dt * prob[ell + 1, t-1] - gamma * dt * prob[ell, t-1]
         if ell > 0:
-            prob[ell, t] = prob[ell, t] - r[ell - 1] * prob[ell-1, t-1]
+            prob[ell, t] = prob[ell, t] + r[ell - 1] * prob[ell-1, t-1]
 
 pboc.bar3(prob, xlabel='time (steps)', ylabel='length', zlabel='probability')
 plt.show()

@@ -15,3 +15,14 @@ plt.ylabel('kT / $\chi$')
 plt.legend(loc='upper center')
 plt.show()
 # phi log phi + 1 - log(phi) + chi * phi * (1 - phi)
+
+
+# Plot change in energy.
+plt.figure()
+for chi in chi_values:
+    delta_U = 2 * chi * phi * (1 - phi)
+    plt.plot(phi, delta_U, label=str(chi))
+    plt.show()
+
+plt.xlabel('phi')
+plt.ylabel('delta U')
