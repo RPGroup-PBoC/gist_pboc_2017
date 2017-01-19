@@ -5,6 +5,8 @@ import seaborn as sns
 import pboc_utils as pboc
 
 
+plt.close('all')
+
 
 # infinite monomer pool
 
@@ -12,8 +14,8 @@ import pboc_utils as pboc
 r = 20
 dt = 1/50
 gamma = 3
-tot_length = 50
-tot_time = 50
+tot_length = 80
+tot_time = 100
 
 # Set up the array
 prob = np.zeros((tot_length + 1, tot_time))
@@ -26,10 +28,33 @@ for t in range(1, tot_time):
         prob[ell, t] = prob[ell, t-1] - r * dt * prob[ell, t-1] + gamma * dt * prob[ell + 1, t - 1] - gamma * dt * prob[ell, t - 1]
         if ell > 0:
             prob[ell, t] = prob[ell, t] + r * dt * prob[ell-1, t-1]
-# plot it
-pboc.bar3(prob)
-plt.show()
 
+# plot it
+pboc.bar3(prob, bin_step=3)
+plt.show()
+r = np.exp(np.linspace(0, -1, tot_length))
 # Finite monomer pool
 prob = np.zeros((tot_length + 1, tot_time))
+prob[0, 0] = 1.0
+for t in range(1, tot_time):
+    for ell in range(tot_length):
+        prob[ell, t] = prob[ell, t-1] - r[ell] * dt * prob[ell, t-1] + gamma * dt * prob[ell + 1, t-1] - gamma * dt * prob[ell, t-1]
+        if ell > 0:
+            prob[ell, t] = prob[ell, t] - r[ell - 1] * prob[ell-1, t-1]
+
+pboc.bar3(prob, xlabel='time (steps)', ylabel='length', zlabel='probability')
+plt.show()
 # Severing proteins
+prob = np.zeros((tot_length + 1, tot_time))
+r = 20
+gamma = 1
+prob[0, 0] = 1.0
+for t in range(1, tot_time):
+    for ell in range(tot_length):
+        prob[ell, t] = prob[ell, t-1] - r * dt * prob[ell, t-1] + gamma * (ell + 1) * dt * prob[ell + 1, t-1] - gamma * ell * dt * prob[ell, t-1]
+        if ell > 0:
+            prob[ell, t] = prob[ell, t] + r * dt * prob[ell - 1, t-1]
+
+
+pboc.bar3(prob, bin_step=3)
+plt.show()
