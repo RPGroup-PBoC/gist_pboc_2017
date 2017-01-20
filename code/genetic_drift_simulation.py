@@ -54,7 +54,7 @@ plt.show()
 #
 # Now we want to find out the time to fixation.
 mean_fixation_time = []
-population = [2, 40, 60 , 80, 100, 120, 200]
+population = [2, 40, 60, 80, 100, 120, 200]
 num_simulations = 100
 for N in population:
     fixation_time = []
