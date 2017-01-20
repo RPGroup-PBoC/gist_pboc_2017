@@ -2,7 +2,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-
+sns.set_context('talk')
 # For image processing.
 import skimage.io
 
@@ -65,7 +65,8 @@ plt.yscale('log')
 plt.xscale('log')
 plt.legend()
 plt.show()
-
+plt.tight_layout()
+plt.savefig('figures/other_predictions.png', bbox_inches='tight')
 # We see that we have lower fold-change (higher repression) when we have more
 # repressor around to do the job. We also get lower fold-change if we increase
 # the strength at which the repressor molecule binds the DNA. Let's put those

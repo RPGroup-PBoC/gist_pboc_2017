@@ -2,7 +2,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn
-seaborn.set_context('talk')
 # Import our custom module
 import pboc_utils as pboc
 
@@ -26,8 +25,6 @@ for t in range(1, time_points):
 
 pboc.bar3(prob, xlabel='time (s)', ylabel='box number', zlabel='probability',
           bin_step=5)
-plt.tight_layout()
-plt.savefig('../figures/master_equation_diffusion.png', bbox_inches='tight', dpi=200)
 
 # Set up the array for the probabilities.
 num_boxes = 10
@@ -53,6 +50,5 @@ for t in range(1, time_points):
 
 # Plot it
 pboc.bar3(prob, xlabel='time', ylabel='box number', zlabel='probability')
-plt.tight_layout()
-plt.savefig('../figures/master_equation_frap.png', bbox_inches='tight', dpi=200)
+
 plt.show()
