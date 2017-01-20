@@ -17,7 +17,7 @@ for i in range(2 * N + 1):
 
 
 # Now apply it to the generation vector
-n_gen = 30
+n_gen = 80
 allele_freq = np.zeros((2 * N + 1, n_gen))
 allele_freq[N, 0] = 1.0
 
